@@ -1,0 +1,86 @@
+version: "3.1"
+
+rules:
+  - rule: Greet user on start
+    steps:
+      - intent: start
+      - action: utter_greet
+
+  - rule: Handle relationship clarification
+    condition:
+      - slot_was_set:
+          - current_context: relationship_validation
+    steps:
+      - intent: clarify
+      - action: action_validate_relationship
+
+  - rule: Handle class modification
+    condition:
+      - slot_was_set:
+          - current_context: class_modification
+    steps:
+      - intent: modify_class
+      - action: utter_ask_class_modification
+
+  - rule: Handle attribute addition
+    condition:
+      - slot_was_set:
+          - modification_type: attribute
+    steps:
+      - intent: add_attribute
+      - action: utter_ask_attribute_details
+
+  - rule: Handle method addition
+    condition:
+      - slot_was_set:
+          - modification_type: method
+    steps:
+      - intent: add_method
+      - action: utter_ask_method_details
+
+  - rule: Handle export request
+    condition:
+      - slot_was_set:
+          - current_context: export_request
+    steps:
+      - intent: export_diagram
+      - action: utter_ask_export_format
+
+  - rule: Provide help when requested
+    steps:
+      - intent: get_help
+      - action: action_provide_help
+
+  - rule: Show context when requested
+    steps:
+      - intent: show_context
+      - action: action_show_context
+
+  - rule: Handle unknown commands
+    steps:
+      - intent: nlu_fallback
+      - action: utter_default
+
+  - rule: Say goodbye when conversation ends
+    steps:
+      - intent: goodbye
+      - action: utter_goodbye
+
+  - rule: Confirm changes before applying
+    condition:
+      - slot_was_set:
+          - target_class: null
+    steps:
+      - intent: modify_class
+      - action: utter_confirm_change
+
+  - rule: Apply confirmed changes
+    steps:
+      - intent: confirm_change
+      - action: action_modify_diagram
+      - action: utter_change_applied
+
+  - rule: Cancel changes when requested
+    steps:
+      - intent: cancel_change
+      - action: utter_default
