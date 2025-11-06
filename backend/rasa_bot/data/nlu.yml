@@ -1,0 +1,223 @@
+version: "3.1"
+
+nlu:
+  - intent: affirm
+    examples: |
+      - yes
+      - yeah
+      - that's right
+      - correct
+      - exactly
+      - definitely
+      - sure
+      - of course
+      - sounds good
+      - perfect
+
+  - intent: deny
+    examples: |
+      - no
+      - nope
+      - not really
+      - that's wrong
+      - incorrect
+      - I don't think so
+      - that's not right
+      - absolutely not
+      - negative
+
+  - intent: clarify
+    examples: |
+      - composition
+      - association
+      - aggregation
+      - inheritance
+      - it's a composition relationship
+      - make it association
+      - that's aggregation
+      - use inheritance instead
+      - change to composition
+      - I want an association
+
+  - intent: modify_relationship
+    examples: |
+      - change the relationship between [User](class_name) and [Account](class_name)
+      - make the [User](class_name) [Account](class_name) relationship composition
+      - the [Student](class_name) [Course](class_name) relationship should be many to many
+      - change multiplicity to [1..*](multiplicity)
+      - make it [0..1](multiplicity) multiplicity
+      - update the [Order](class_name) [Product](class_name) relationship
+      - modify the relationship between [Teacher](class_name) and [Student](class_name)
+
+  - intent: add_class
+    examples: |
+      - add a [Payment](class_name) class
+      - I want to add [Category](class_name)
+      - create a new class called [Transaction](class_name)
+      - add class [Admin](class_name)
+      - we need a [Report](class_name) class
+      - please add [Customer](class_name) class
+
+  - intent: remove_class
+    examples: |
+      - remove the [Transaction](class_name) class
+      - delete [LegacyClass](class_name)
+      - get rid of [OldClass](class_name)
+      - remove [Payment](class_name)
+      - I don't need the [Temp](class_name) class
+
+  - intent: modify_class
+    examples: |
+      - modify the [User](class_name) class
+      - change the [Product](class_name) class
+      - update [Account](class_name)
+      - I want to edit [Order](class_name)
+      - modify [Customer](class_name)
+
+  - intent: add_attribute
+    examples: |
+      - add [username](attribute_name) to [User](class_name)
+      - add a [price](attribute_name) attribute to [Product](class_name)
+      - [User](class_name) should have a [email](attribute_name) field
+      - add [balance](attribute_name): [Float](data_type) to [Account](class_name)
+      - give [Customer](class_name) a [phoneNumber](attribute_name) attribute
+      - [Product](class_name) needs a [quantity](attribute_name) of type [Integer](data_type)
+
+  - intent: remove_attribute
+    examples: |
+      - remove [oldField](attribute_name) from [User](class_name)
+      - delete the [tempAttribute](attribute_name) from [Product](class_name)
+      - I don't need [legacyField](attribute_name) in [Account](class_name)
+      - remove [phoneNumber](attribute_name) from [Customer](class_name)
+
+  - intent: add_method
+    examples: |
+      - add [login](method_name) method to [User](class_name)
+      - [Product](class_name) should have a [calculateDiscount](method_name) method
+      - add [save](method_name) to [Account](class_name)
+      - [User](class_name) needs a [validateEmail](method_name) method
+      - create [calculateTotal](method_name) method in [Order](class_name)
+
+  - intent: remove_method
+    examples: |
+      - remove [deprecatedMethod](method_name) from [User](class_name)
+      - delete [oldFunction](method_name) from [Product](class_name)
+      - I don't need [legacyOperation](method_name) in [Account](class_name)
+
+  - intent: export_diagram
+    examples: |
+      - export the diagram
+      - save as [mermaid](export_format)
+      - export as [JSON](export_format)
+      - I want to download the diagram
+      - save the UML diagram
+      - export to [SVG](export_format)
+
+  - intent: get_help
+    examples: |
+      - help
+      - what can you do
+      - how does this work
+      - I need help
+      - what commands do you support
+      - show me what I can do
+      - help me understand
+
+  - intent: show_context
+    examples: |
+      - what does my diagram look like
+      - show me the current diagram
+      - what classes do I have
+      - how many relationships are there
+      - show context
+      - what's the current state
+      - summarize my diagram
+
+  - intent: confirm_change
+    examples: |
+      - yes do it
+      - confirm
+      - proceed
+      - that's correct
+      - go ahead
+      - make the change
+      - apply it
+
+  - intent: cancel_change
+    examples: |
+      - cancel
+      - never mind
+      - don't do it
+      - stop
+      - abort
+      - ignore that
+
+  - lookup_table: relationship_type
+    examples: |
+      - composition: [composition](relationship_type)
+      - association: [association](relationship_type)
+      - aggregation: [aggregation](relationship_type)
+      - inheritance: [inheritance](relationship_type)
+      - has-a: [composition](relationship_type)
+      - contains: [composition](relationship_type)
+      - uses: [association](relationship_type)
+      - references: [association](relationship_type)
+      - extends: [inheritance](relationship_type)
+      - inherits: [inheritance](relationship_type)
+      - collection: [aggregation](relationship_type)
+      - group: [aggregation](relationship_type)
+
+  - lookup_table: data_type
+    examples: |
+      - text: [String](data_type)
+      - number: [Integer](data_type)
+      - decimal: [Float](data_type)
+      - boolean: [Boolean](data_type)
+      - date: [DateTime](data_type)
+      - string: [String](data_type)
+      - int: [Integer](data_type)
+      - double: [Float](data_type)
+      - bool: [Boolean](data_type)
+
+  - regex: multiplicity
+    examples: |
+      - /1|one|single/
+      - /\*|many|multiple/
+      - /0\.\.1|optional|maybe/
+      - /1\.\.\*|one to many/
+      - /\*\.\.\*|many to many/
+
+  - synonym: User
+    examples: |
+      - user
+      - customer
+      - client
+      - account holder
+
+  - synonym: composition
+    examples: |
+      - has-a
+      - contains
+      - owns
+      - manages
+      - controls
+
+  - synonym: association
+    examples: |
+      - uses
+      - references
+      - connects to
+      - links to
+
+  - synonym: inheritance
+    examples: |
+      - extends
+      - inherits
+      - is-a
+      - is a type of
+
+  - synonym: aggregation
+    examples: |
+      - collection of
+      - group of
+      - has multiple
