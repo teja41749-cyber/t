@@ -265,7 +265,7 @@ const ExportButtons = ({ umlModel, mermaidCode }) => {
         💾 Export Options
       </ExportTitle>
 
-      <ExportButtons>
+      <ExportButtonContainer>
         {exportFormats.map((format) => (
           <div key={format.key} style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             <div style={{ display: 'flex', gap: '4px' }}>
