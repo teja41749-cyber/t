@@ -1,0 +1,82 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+      - MODEL_PATH=./models/fine_tuned_bert
+      - RASA_ENDPOINT=http://rasa:5005
+      - REDIS_URL=redis://redis:6379
+    volumes:
+      - ./backend:/app
+      - ./models:/app/models
+    depends_on:
+      - redis
+      - rasa
+    networks:
+      - uml-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:5000/api
+      - REACT_APP_RASA_URL=http://localhost:5005
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    networks:
+      - uml-network
+
+  rasa:
+    build:
+      context: ./backend/rasa_bot
+      dockerfile: Dockerfile
+    ports:
+      - "5005:5005"
+    volumes:
+      - ./backend/rasa_bot:/app
+      - ./backend/rasa_bot/models:/app/models
+    command: >
+      sh -c "rasa train --no-prompt &&
+             rasa run --enable-api --cors '*' --port 5005"
+    networks:
+      - uml-network
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - uml-network
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - uml-network
+
+volumes:
+  redis_data:
+
+networks:
+  uml-network:
+    driver: bridge
