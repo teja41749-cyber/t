@@ -82,7 +82,6 @@ def update_diagram():
         }), 500
 
 @diagram_bp.route('/export', methods=['POST'])
-@limiter.limit("10 per minute")
 def export_diagram():
     """
     Export diagram in various formats.
