@@ -277,7 +277,6 @@ def validate_diagram():
         }), 500
 
 @diagram_bp.route('/statistics', methods=['POST'])
-@limiter.limit("15 per minute")
 def get_statistics():
     """
     Get detailed statistics about the UML diagram.
