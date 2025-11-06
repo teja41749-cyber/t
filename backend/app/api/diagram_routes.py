@@ -13,7 +13,6 @@ diagram_bp = Blueprint('diagram', __name__)
 diagram_generator = DiagramGenerator()
 
 @diagram_bp.route('/update', methods=['POST'])
-@limiter.limit("20 per minute")
 def update_diagram():
     """
     Update diagram based on user modifications.
