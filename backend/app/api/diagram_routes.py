@@ -8,10 +8,6 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 diagram_bp = Blueprint('diagram', __name__)
-limiter = Limiter(
-    key_func=get_remote_address,
-    default_limits=["20 per minute"]
-)
 
 # Initialize services
 diagram_generator = DiagramGenerator()
