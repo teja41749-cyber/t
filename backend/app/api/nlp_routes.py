@@ -14,7 +14,6 @@ nlp_processor = NLPProcessor()
 diagram_generator = DiagramGenerator()
 
 @nlp_bp.route('/extract', methods=['POST'])
-@limiter.limit("10 per minute")
 def extract_uml():
     """
     Extract UML model from requirement text.
