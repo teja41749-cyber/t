@@ -304,7 +304,7 @@ const ExportButtons = ({ umlModel, mermaidCode }) => {
             )}
           </div>
         ))}
-      </ExportButtons>
+      </ExportButtonContainer>
 
       <div style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)', marginTop: 'var(--spacing-sm)' }}>
         <strong>Tip:</strong> Mermaid code can be used in documentation tools like GitHub, GitLab, or Notion.
