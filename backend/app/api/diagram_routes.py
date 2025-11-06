@@ -157,7 +157,6 @@ def export_diagram():
         }), 500
 
 @diagram_bp.route('/validate', methods=['POST'])
-@limiter.limit("15 per minute")
 def validate_diagram():
     """
     Validate UML diagram structure and syntax.
