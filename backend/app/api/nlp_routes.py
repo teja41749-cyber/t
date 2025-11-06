@@ -1,6 +1,4 @@
 from flask import Blueprint, request, jsonify
-from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
 import logging
 import time
 from ..services.nlp_processor import NLPProcessor
@@ -10,10 +8,6 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 nlp_bp = Blueprint('nlp', __name__)
-limiter = Limiter(
-    key_func=get_remote_address,
-    default_limits=["10 per minute"]
-)
 
 # Initialize services
 nlp_processor = NLPProcessor()
