@@ -17,7 +17,7 @@ const ExportTitle = styled.h4`
   gap: var(--spacing-sm);
 `;
 
-const ExportButtons = styled.div`
+const ExportButtonContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: var(--spacing-sm);
