@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Hybrid UML Class Diagram Generator (MVP)</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    body{font-family:system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin:24px; max-width: 960px}
+    textarea{width:100%; height:160px; font-family:ui-monospace, SFMono-Regular, Menlo, monospace; padding:12px}
+    button{padding:8px 12px; cursor:pointer}
+    #out{border:1px solid #eee; padding:12px; margin-top:16px; overflow:auto}
+  </style>
+ <script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+  mermaid.initialize({ startOnLoad: false });
+
+  async function renderMermaid(code){
+    const { svg } = await mermaid.render('uml', code);
+    document.getElementById('out').innerHTML = svg;
+  }
+
+  async function generate(){
+    const text = document.getElementById('req').value;
+    const btn  = document.getElementById('btn');
+    const err  = document.getElementById('err');
+    err.textContent = "";
+    btn.disabled = true; btn.textContent = "Generating…";
+    try{
+      const res = await fetch('/api/extract', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ text })
+      });
+
+      // Read as text first, then try JSON
+      const raw = await res.text();
+      let data = {};
+      try { data = raw ? JSON.parse(raw) : {}; }
+      catch (e) {
+        // Show first 200 chars of whatever came back
+        throw new Error(`Server returned non-JSON (${res.status}): ${raw.slice(0,200)}`);
+      }
+
+      if (!res.ok) {
+        throw new Error(data.error || `Request failed (${res.status})`);
+      }
+
+      const mermaidCode = (data.mermaid_code || "").replace(/\\n/g, '\n');
+      await renderMermaid(mermaidCode);
+    } catch (e){
+      err.textContent = e.message;
+      console.error(e);
+    } finally {
+      btn.disabled = false; btn.textContent = "Generate Initial Diagram";
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', ()=>{
+    document.getElementById('btn').addEventListener('click', generate);
+  });
+</script>
+</head>
+<body>
+  <h1>Hybrid UML Class Diagram Generator (MVP)</h1>
+  <p>Paste your requirements (50–10000 chars):</p>
+  <textarea id="req">Users can create accounts with username and password. Users have shopping carts that contain multiple products. 
+    Products have prices and descriptions. Orders are created from carts and contain order details.</textarea>
+  <div style="display:flex; gap:8px; align-items:center; margin-top:8px">
+    <button id="btn">Generate Initial Diagram</button>
+    <small id="err" style="color:#c00;"></small>
+  </div>
+  <div id="out" aria-live="polite"></div>
+</body>
+</html>

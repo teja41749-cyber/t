@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
+from werkzeug.exceptions import HTTPException
 from app.services.diagram_generator import DiagramGenerator
 from app.services.nlp_processor import NLPProcessor
 import os
@@ -7,9 +8,22 @@ import os
 app = Flask(__name__)
 CORS(app)
 
+# ---- JSON error handler (prevents HTML error pages) ----
+@app.errorhandler(Exception)
+def handle_any_error(e):
+    if isinstance(e, HTTPException):
+        return jsonify({"error": e.name, "detail": e.description}), e.code
+    app.logger.exception(e)
+    return jsonify({"error": "internal_server_error", "detail": str(e)}), 500
+
 @app.get("/health")
 def health():
     return jsonify({"status": "ok"}), 200
+
+# quick ping for debugging
+@app.get("/api/ping")
+def ping():
+    return jsonify({"ok": True})
 
 processor = NLPProcessor()
 diagrammer = DiagramGenerator()
